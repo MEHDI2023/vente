@@ -6,6 +6,7 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -13,29 +14,29 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false; // Indicateur de chargement
   final _formKey = GlobalKey<FormState>(); // Clé du formulaire
 
-  Future<void> _showCreateAccountDialog()  async {
+  Future<void> _showCreateAccountDialog() async {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    bool _isError = false;
-    bool _isLoading = false;
+    GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Clé du formulaire
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Créer un compte'),
           content: SingleChildScrollView(
-            child: Form( // Widget Form pour la validation
-              key: _formKey, // Clé du formulaire
+            child: Form(
+              key: _formKey, // Utilisation de la clé du formulaire
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextFormField( // Widget TextFormField pour la validation
+                  TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'E-mail',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) { // Fonction de validation
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Veuillez entrer un e-mail';
                       }
@@ -46,14 +47,14 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   SizedBox(height: 10.0),
-                  TextFormField( // Widget TextFormField pour la validation
+                  TextFormField(
                     controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Mot de passe',
                       border: OutlineInputBorder(),
                     ),
                     obscureText: true,
-                    validator: (value) { // Fonction de validation
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Veuillez entrer un mot de passe';
                       }
@@ -66,42 +67,60 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 10.0),
                   ElevatedButton(
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) { // Vérification du formulaire
+                      if (_formKey.currentState!.validate()) {
                         String email = emailController.text;
                         String password = passwordController.text;
 
                         try {
-                          setState(() {
-                            _isLoading = true; // Affichage de l'indicateur de chargement
-                          });
-                          UserCredential userCredential = await FirebaseAuth
-                              .instance
+                          // Affichage de l'indicateur de chargement
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Création du compte en cours...'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          UserCredential userCredential =
+                          await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
                             email: email,
                             password: password,
                           );
                           print('Utilisateur créé : ${userCredential.user!.uid}');
-                          Navigator.of(context)
-                              .pop(); // Fermer la boîte de dialogue
+                          Navigator.of(context).pop(); // Fermer la boîte de dialogue
                         } catch (e) {
                           // Gestion des erreurs lors de la création du compte
                           print('Erreur de création de compte : $e');
+                          String errorMessage =
+                              'Erreur de création de compte. Veuillez réessayer.';
+                          if (e is FirebaseAuthException) {
+                            // Personnalisation des messages d'erreur FirebaseAuth
+                            switch (e.code) {
+                              case 'weak-password':
+                                errorMessage =
+                                'Le mot de passe est trop faible. Essayez avec un mot de passe plus fort.';
+                                break;
+                              case 'email-already-in-use':
+                                errorMessage =
+                                'Cet e-mail est déjà utilisé par un autre compte.';
+                                break;
+                            // Ajoutez d'autres cas selon les erreurs FirebaseAuth
+                              default:
+                                errorMessage =
+                                'Erreur de création de compte. Veuillez réessayer.';
+                                break;
+                            }
+                          }
+                          // Affichage du message d'erreur à l'utilisateur
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                  'Erreur de création de compte. Veuillez réessayer.'),
+                              content: Text(errorMessage),
+                              duration: Duration(seconds: 4),
                             ),
                           );
-                        } finally {
-                          setState(() {
-                            _isLoading = false; // Masquage de l'indicateur de chargement
-                          });
                         }
                       }
                     },
-                    child: _isLoading // Affichage du widget selon l'état de chargement
-                        ? CircularProgressIndicator()
-                        : Text('Créer'),
+                    child: Text('Créer'),
                   ),
                 ],
               ),
@@ -174,7 +193,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -183,7 +201,6 @@ class _LoginPageState extends State<LoginPage> {
               elevation: 8.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
-
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -194,14 +211,14 @@ class _LoginPageState extends State<LoginPage> {
                     CircleAvatar(
                       radius: 50.0,
                       backgroundImage: NetworkImage(
-                          "https://th.bing.com/th/id/OIG.THf0Pz_odTCG4H2IUgf0?pid=ImgGn "           ),),
+                          "https://th.bing.com/th/id/OIG.THf0Pz_odTCG4H2IUgf0?pid=ImgGn "),
+                    ),
                     SizedBox(height: 20.0),
                     Text(
                       'Connectez-vous',
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
-
                       ),
                     ),
                     SizedBox(height: 20.0),
@@ -226,9 +243,10 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: _login,
-                      child: _isLoading // Affichage du widget selon l'état de chargement
-                          ? CircularProgressIndicator()
-                          : Text('Se connecter'),
+                      child:
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : Text('Se connecter'),
                     ),
                     SizedBox(height: 10.0),
                     if (_isError)
