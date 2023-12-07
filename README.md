@@ -1,4 +1,4 @@
-# vente
+# application de vente
 
 A new Flutter project.
 
