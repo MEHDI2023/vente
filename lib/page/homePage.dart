@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:vente/Widgets/productWidget.dart';
-import 'package:vente/loginPage.dart';
+import 'package:vente/Widgets/product_widget_cart.dart';
+import 'package:vente/Widgets/product_widget_favorite.dart';
+
 import 'package:vente/shared/shared.dart';
 
-import 'Widgets/product_widget_home.dart'; // Importer la page de login
+import '../Widgets/product_widget_home.dart';
+import '../login/LoginPage.dart'; // Importer la page de login
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key});
@@ -28,7 +30,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
               );
@@ -66,21 +68,62 @@ class HomePage extends StatelessWidget {
                       snapshot.data!.docs[index].data() as Map<String, dynamic>;
                   return ProductItemHome(
                     onProductAddedToFavorites: () {
-                      favoriteProducts.add(ProductItemHome(
+                      ProductItemFavorite productItem = ProductItemFavorite(
+                        quantite: productData['quntite'],
                         imageUrl: productData['imageUrl'],
                         title: productData['titre'],
                         prix: productData['prix'],
-                      ));
-                    },
-                    onProductAdded: () {
-                      ProductItem productItem = ProductItem(imageUrl: productData['imageUrl'], title: productData['titre'], prix: productData['prix'], quantite: productData['quntite']);
-                      cartItem.add(productItem);
+                        id: productData['id'],
+                      );
+
+                      // Vérifie si un élément avec le même ID existe déjà dans favoriteProducts
+                      int idToAdd = -1;
+                      for (int i = 0; i < favoriteProducts.length; i++) {
+                        if (favoriteProducts[i].id == productItem.id) {
+                          idToAdd = i;
+                          break;
+                        }
+                      }
+                      if (idToAdd != -1) {
+                        favoriteProducts.removeAt(idToAdd);
+                      }
+                      // Sinon, l'ajouter
+                      else {
+                        favoriteProducts.add(productItem);
+                      }
                     },
 
+                    onProductAdded: () {
+                      ProductItem productItem = ProductItem(
+                          imageUrl: productData['imageUrl'],
+                          title: productData['titre'],
+                          prix: productData['prix'],
+                          quantite: productData['quntite'],
+                          id: productData['id']);
+                      int idToRemove = -1;
+                      for (int i = 0; i < cartItem.length; i++) {
+                        if (cartItem[i].id == productItem.id) {
+                          idToRemove = i;
+                          break;
+                        }
+                      }
+
+                      // Si un élément avec le même ID est trouvé, le supprimer
+                      if (idToRemove != -1) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Ce produit est déja ajouter"),
+                            duration: Duration(seconds: 4),
+                          ),
+                        );
+                      } else {
+                        cartItem.add(productItem);
+                      }
+                    },
                     imageUrl: productData['imageUrl'],
                     title: productData['titre'],
                     prix: productData['prix'],
-
+                    id: productData['id'],
                   );
                 },
               );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vente/Widgets/productWidget.dart';
+import 'package:vente/Widgets/product_widget_cart.dart';
 import 'package:vente/shared/shared.dart';
 
 class CartPage extends StatefulWidget {
@@ -33,6 +33,7 @@ class _CartPageState extends State<CartPage> {
             imageUrl: cartItem[index].imageUrl,
             title: cartItem[index].title,
             prix:cartItem[index].prix,
+              id :cartItem[index].id,
           );
         },
       ),

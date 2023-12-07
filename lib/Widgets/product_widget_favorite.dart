@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:vente/Widgets/product_widget_cart.dart';
+import 'package:vente/page/homePage.dart';
+import 'package:vente/shared/shared.dart';
 
-class ProductItem extends StatefulWidget {
+class ProductItemFavorite extends StatefulWidget {
   final String imageUrl;
   final String title;
   final String prix;
+  final int quantite;
+  final int id;
+
 
   Function(int)? onQuantityChanged;
   final VoidCallback? onProductAdded;
   final VoidCallback? onProductAddedToFavorites;
-  int quantite;
-  ProductItem({
+  final VoidCallback? OnProductDeleted ;
+
+  ProductItemFavorite({
+    required this.quantite,
     required this.imageUrl,
     required this.title,
     required this.prix,
+    required this.id,
+
     this.onQuantityChanged,
     this.onProductAdded,
     this.onProductAddedToFavorites,
-    required this.quantite,
+    this.OnProductDeleted,
+
+
   });
 
   @override
-  State<ProductItem> createState() => _ProductItemState();
+  State<ProductItemFavorite> createState() => _ProductItemFavoriteState();
 }
 
-class _ProductItemState extends State<ProductItem> {
+class _ProductItemFavoriteState extends State<ProductItemFavorite> {
   int quantite = 0;
   bool isFavorite = false;
 
@@ -63,40 +75,25 @@ class _ProductItemState extends State<ProductItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      widget.title ,
+                      widget.title,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16.0),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "${widget.prix}" +"\$",
+                      "${widget.prix}"+" \$",
                       style: TextStyle(color: Colors.green, fontSize: 14.0),
                     ),
+                    Spacer(),
                     Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (widget.quantite > 0) {
-                                widget.onQuantityChanged!(widget.quantite - 1);
-                              }
-                            });
-                          },
-                          icon: Icon(Icons.remove),
-                        ),
-                        Text("${widget.quantite}", style: TextStyle(fontSize: 18.0)),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.onQuantityChanged!(widget.quantite + 1);
-                            });
-                          },
-                          icon: Icon(Icons.add),
-                        ),
-                        Spacer(),
                         ElevatedButton(
                           onPressed: () {
-                            widget.onProductAdded!();
+                            cartItem.add(ProductItem(imageUrl: widget.imageUrl, title: widget.title, prix: widget.prix, quantite: widget.quantite,id: widget.id,));
+                            setState(() {
+
+                            });
+
                           },
                           child: Text("Add"),
                         ),
@@ -112,13 +109,11 @@ class _ProductItemState extends State<ProductItem> {
                           },
                           icon: Icon(
                             isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite
-                                ? Colors.red
-                                : null, // Couleur du cœur
+                            color:
+                            isFavorite ? Colors.red : null, // Couleur du cœur
                           ),
                         ),
-                      ],
-                    ),
+                      ],),
                   ],
                 ),
               ),

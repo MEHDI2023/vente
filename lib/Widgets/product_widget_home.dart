@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:vente/page/homePage.dart';
 
 class ProductItemHome extends StatefulWidget {
   final String imageUrl;
   final String title;
   final String prix;
+  final int id;
 
 
   Function(int)? onQuantityChanged;
   final VoidCallback? onProductAdded;
   final VoidCallback? onProductAddedToFavorites;
+  final VoidCallback? OnProductDeleted ;
 
   ProductItemHome({
     required this.imageUrl,
     required this.title,
     required this.prix,
+    required this.id,
 
     this.onQuantityChanged,
     this.onProductAdded,
     this.onProductAddedToFavorites,
+    this.OnProductDeleted,
+
+
 
   });
 
@@ -79,7 +86,9 @@ class _ProductItemHomeState extends State<ProductItemHome> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
+
                         widget.onProductAdded!();
+
                       },
                       child: Text("Add"),
                     ),

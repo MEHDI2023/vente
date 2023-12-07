@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vente/favoritePage.dart';
-import 'package:vente/homePage.dart';
+import 'package:vente/page/favoritePage.dart';
+import 'package:vente/page/homePage.dart';
 
-import 'cartPage.dart';
+import 'page/cartPage.dart';
 
 class LendingPage extends StatefulWidget {
   LendingPage({super.key});

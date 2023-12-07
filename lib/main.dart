@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:vente/LoginPage.dart';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'login/LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: SplashScreen(), // Puedes crear un widget de SplashScreen si quieres mostrar algo antes de redirigir a la página de login
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

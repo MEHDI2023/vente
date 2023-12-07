@@ -20,6 +20,7 @@ class _FavoritePageState extends State<FavoritePage> {
       body: ListView.builder(
         itemCount: favoriteProducts.length,
         itemBuilder: (BuildContext context, int index) {
+
           return favoriteProducts.isEmpty? Container(child: Text("cart empty"),):favoriteProducts[index];
         },
       ),
