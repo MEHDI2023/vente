@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "385440380654",
+    "project_id": "projet-vente-ff1b9",
+    "storage_bucket": "projet-vente-ff1b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385440380654:android:266f1ca11a3e4591c025ff",
+        "android_client_info": {
+          "package_name": "com.example.vente"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQt72Oqv2HpT9XVVWFaJLHi5jaWkfVFwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
