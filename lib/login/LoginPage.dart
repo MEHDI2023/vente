@@ -79,14 +79,16 @@ class _LoginPageState extends State<LoginPage> {
                               duration: Duration(seconds: 2),
                             ),
                           );
-                          UserCredential userCredential =
-                          await FirebaseAuth.instance
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
                               .createUserWithEmailAndPassword(
                             email: email,
                             password: password,
                           );
-                          print('Utilisateur créé : ${userCredential.user!.uid}');
-                          Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                          print(
+                              'Utilisateur créé : ${userCredential.user!.uid}');
+                          Navigator.of(context)
+                              .pop(); // Fermer la boîte de dialogue
                         } catch (e) {
                           // Gestion des erreurs lors de la création du compte
                           print('Erreur de création de compte : $e');
@@ -97,16 +99,16 @@ class _LoginPageState extends State<LoginPage> {
                             switch (e.code) {
                               case 'weak-password':
                                 errorMessage =
-                                'Le mot de passe est trop faible. Essayez avec un mot de passe plus fort.';
+                                    'Le mot de passe est trop faible. Essayez avec un mot de passe plus fort.';
                                 break;
                               case 'email-already-in-use':
                                 errorMessage =
-                                'Cet e-mail est déjà utilisé par un autre compte.';
+                                    'Cet e-mail est déjà utilisé par un autre compte.';
                                 break;
-                            // Ajoutez d'autres cas selon les erreurs FirebaseAuth
+                              // Ajoutez d'autres cas selon les erreurs FirebaseAuth
                               default:
                                 errorMessage =
-                                'Erreur de création de compte. Veuillez réessayer.';
+                                    'Erreur de création de compte. Veuillez réessayer.';
                                 break;
                             }
                           }
@@ -130,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
   Future<void> _resetPassword() async {
     String email = _emailController.text;
     try {
@@ -142,17 +145,20 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (e) {
       print('Erreur de réinitialisation du mot de passe : $e');
-      String errorMessage = 'Erreur de réinitialisation du mot de passe. Veuillez réessayer.';
+      String errorMessage =
+          'Erreur de réinitialisation du mot de passe. Veuillez réessayer.';
       if (e is FirebaseAuthException) {
         switch (e.code) {
           case 'invalid-email':
             errorMessage = 'Adresse e-mail invalide.';
             break;
           case 'user-not-found':
-            errorMessage = 'Aucun utilisateur trouvé avec cette adresse e-mail.';
+            errorMessage =
+                'Aucun utilisateur trouvé avec cette adresse e-mail.';
             break;
           default:
-            errorMessage = 'Erreur de réinitialisation du mot de passe. Veuillez réessayer.';
+            errorMessage =
+                'Erreur de réinitialisation du mot de passe. Veuillez réessayer.';
             break;
         }
       }
@@ -277,10 +283,9 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: _login,
-                      child:
-                          _isLoading
-                              ? CircularProgressIndicator()
-                              : Text('Se connecter'),
+                      child: _isLoading
+                          ? CircularProgressIndicator()
+                          : Text('Se connecter'),
                     ),
                     SizedBox(height: 20.0),
                     ElevatedButton(

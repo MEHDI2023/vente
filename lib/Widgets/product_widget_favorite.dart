@@ -10,11 +10,10 @@ class ProductItemFavorite extends StatefulWidget {
   final int quantite;
   final int id;
 
-
   Function(int)? onQuantityChanged;
   final VoidCallback? onProductAdded;
   final VoidCallback? onProductAddedToFavorites;
-  final VoidCallback? OnProductDeleted ;
+  final VoidCallback? OnProductDeleted;
 
   ProductItemFavorite({
     required this.quantite,
@@ -22,13 +21,10 @@ class ProductItemFavorite extends StatefulWidget {
     required this.title,
     required this.prix,
     required this.id,
-
     this.onQuantityChanged,
     this.onProductAdded,
     this.onProductAddedToFavorites,
     this.OnProductDeleted,
-
-
   });
 
   @override
@@ -81,7 +77,7 @@ class _ProductItemFavoriteState extends State<ProductItemFavorite> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "${widget.prix}"+" \$",
+                      "${widget.prix}" + " \$",
                       style: TextStyle(color: Colors.green, fontSize: 14.0),
                     ),
                     Spacer(),
@@ -89,11 +85,14 @@ class _ProductItemFavoriteState extends State<ProductItemFavorite> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            cartItem.add(ProductItem(imageUrl: widget.imageUrl, title: widget.title, prix: widget.prix, quantite: widget.quantite,id: widget.id,));
-                            setState(() {
-
-                            });
-
+                            cartItem.add(ProductItem(
+                              imageUrl: widget.imageUrl,
+                              title: widget.title,
+                              prix: widget.prix,
+                              quantite: widget.quantite,
+                              id: widget.id,
+                            ));
+                            setState(() {});
                           },
                           child: Text("Add"),
                         ),
@@ -109,11 +108,13 @@ class _ProductItemFavoriteState extends State<ProductItemFavorite> {
                           },
                           icon: Icon(
                             isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color:
-                            isFavorite ? Colors.red : null, // Couleur du cœur
+                            color: isFavorite
+                                ? Colors.red
+                                : null, // Couleur du cœur
                           ),
                         ),
-                      ],),
+                      ],
+                    ),
                   ],
                 ),
               ),

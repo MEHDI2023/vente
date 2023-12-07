@@ -92,7 +92,6 @@ class HomePage extends StatelessWidget {
                         favoriteProducts.add(productItem);
                       }
                     },
-
                     onProductAdded: () {
                       ProductItem productItem = ProductItem(
                           imageUrl: productData['imageUrl'],

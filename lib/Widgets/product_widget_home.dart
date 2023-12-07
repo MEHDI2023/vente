@@ -7,25 +7,20 @@ class ProductItemHome extends StatefulWidget {
   final String prix;
   final int id;
 
-
   Function(int)? onQuantityChanged;
   final VoidCallback? onProductAdded;
   final VoidCallback? onProductAddedToFavorites;
-  final VoidCallback? OnProductDeleted ;
+  final VoidCallback? OnProductDeleted;
 
   ProductItemHome({
     required this.imageUrl,
     required this.title,
     required this.prix,
     required this.id,
-
     this.onQuantityChanged,
     this.onProductAdded,
     this.onProductAddedToFavorites,
     this.OnProductDeleted,
-
-
-
   });
 
   @override
@@ -78,37 +73,37 @@ class _ProductItemHomeState extends State<ProductItemHome> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "${widget.prix}"+" \$",
+                      "${widget.prix}" + " \$",
                       style: TextStyle(color: Colors.green, fontSize: 14.0),
                     ),
                     Spacer(),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-
-                        widget.onProductAdded!();
-
-                      },
-                      child: Text("Add"),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.onProductAdded!();
+                          },
+                          child: Text("Add"),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isFavorite = !isFavorite;
+                              if (isFavorite) {
+                                widget.onProductAddedToFavorites
+                                    ?.call(); // Appel de la fonction d'ajout aux favoris
+                              }
+                            });
+                          },
+                          icon: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite
+                                ? Colors.red
+                                : null, // Couleur du cœur
+                          ),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isFavorite = !isFavorite;
-                          if (isFavorite) {
-                            widget.onProductAddedToFavorites
-                                ?.call(); // Appel de la fonction d'ajout aux favoris
-                          }
-                        });
-                      },
-                      icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color:
-                            isFavorite ? Colors.red : null, // Couleur du cœur
-                      ),
-                    ),
-                  ],),
                   ],
                 ),
               ),

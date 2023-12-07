@@ -3,9 +3,9 @@ import 'package:vente/Widgets/product_widget_cart.dart';
 import 'package:vente/shared/shared.dart';
 
 class CartPage extends StatefulWidget {
-  // Utilisez un Map pour stocker plusieurs détails de l'article
-
-  CartPage({Key? key,}) : super(key: key);
+  CartPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CartPage> createState() => _CartPageState();
@@ -18,23 +18,21 @@ class _CartPageState extends State<CartPage> {
       body: ListView.builder(
         itemCount: cartItem.length,
         itemBuilder: (BuildContext context, int index) {
-          int newQuantite=0;
+          int newQuantite = 0;
           return cartItem.isEmpty
               ? Container(child: Text("Cart is empty"))
               : ProductItem(
-
-            quantite: cartItem[index].quantite,
-            onQuantityChanged: (newQuantite) {
-
-              setState(() {
-                cartItem[index].quantite = newQuantite;
-              });
-            },
-            imageUrl: cartItem[index].imageUrl,
-            title: cartItem[index].title,
-            prix:cartItem[index].prix,
-              id :cartItem[index].id,
-          );
+                  quantite: cartItem[index].quantite,
+                  onQuantityChanged: (newQuantite) {
+                    setState(() {
+                      cartItem[index].quantite = newQuantite;
+                    });
+                  },
+                  imageUrl: cartItem[index].imageUrl,
+                  title: cartItem[index].title,
+                  prix: cartItem[index].prix,
+                  id: cartItem[index].id,
+                );
         },
       ),
       bottomNavigationBar: Container(
@@ -51,7 +49,6 @@ class _CartPageState extends State<CartPage> {
   double calculateTotal(List<ProductItem> cartItem) {
     double total = 0;
     for (var item in cartItem) {
-      // Ajoutez le prix total de chaque article multiplié par sa quantité
       total += double.parse(item.prix) * item.quantite;
     }
     return total;

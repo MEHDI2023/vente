@@ -40,9 +40,7 @@ class _LendingPageState extends State<LendingPage> {
           onTap: (index) {
             currentIndex = index;
 
-            setState(() {
-
-            });
+            setState(() {});
           }),
     );
   }

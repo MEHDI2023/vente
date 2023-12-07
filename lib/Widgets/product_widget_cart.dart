@@ -5,7 +5,7 @@ class ProductItem extends StatefulWidget {
   final String imageUrl;
   final String title;
   final String prix;
-  final int id ;
+  final int id;
 
   Function(int)? onQuantityChanged;
   final VoidCallback? onProductDeleted;
@@ -66,13 +66,13 @@ class _ProductItemState extends State<ProductItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      widget.title ,
+                      widget.title,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16.0),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "${widget.prix}" +"\$",
+                      "${widget.prix}" + "\$",
                       style: TextStyle(color: Colors.green, fontSize: 14.0),
                     ),
                     Row(
@@ -87,7 +87,8 @@ class _ProductItemState extends State<ProductItem> {
                           },
                           icon: Icon(Icons.remove),
                         ),
-                        Text("${widget.quantite}", style: TextStyle(fontSize: 18.0)),
+                        Text("${widget.quantite}",
+                            style: TextStyle(fontSize: 18.0)),
                         IconButton(
                           onPressed: () {
                             setState(() {
@@ -101,18 +102,16 @@ class _ProductItemState extends State<ProductItem> {
                           onPressed: () {
                             setState(() {
                               int indexToRemove = cartItem.indexWhere((item) =>
-                              item.imageUrl == widget.imageUrl &&
+                                  item.imageUrl == widget.imageUrl &&
                                   item.title == widget.title &&
                                   item.prix == widget.prix &&
                                   item.id == widget.id &&
-                                  item.quantite == widget.quantite
-                              );
+                                  item.quantite == widget.quantite);
                               if (indexToRemove != -1) {
                                 cartItem.removeAt(indexToRemove);
                               }
                             });
                           },
-
                           child: Text("Delete"),
                         ),
                         IconButton(
@@ -123,7 +122,6 @@ class _ProductItemState extends State<ProductItem> {
                                 widget.onProductAddedToFavorites
                                     ?.call(); // Appel de la fonction d'ajout aux favoris
                               }
-
                             });
                           },
                           icon: Icon(
