@@ -130,6 +130,40 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+  Future<void> _resetPassword() async {
+    String email = _emailController.text;
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Un e-mail de réinitialisation a été envoyé à $email'),
+          duration: Duration(seconds: 4),
+        ),
+      );
+    } catch (e) {
+      print('Erreur de réinitialisation du mot de passe : $e');
+      String errorMessage = 'Erreur de réinitialisation du mot de passe. Veuillez réessayer.';
+      if (e is FirebaseAuthException) {
+        switch (e.code) {
+          case 'invalid-email':
+            errorMessage = 'Adresse e-mail invalide.';
+            break;
+          case 'user-not-found':
+            errorMessage = 'Aucun utilisateur trouvé avec cette adresse e-mail.';
+            break;
+          default:
+            errorMessage = 'Erreur de réinitialisation du mot de passe. Veuillez réessayer.';
+            break;
+        }
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          duration: Duration(seconds: 4),
+        ),
+      );
+    }
+  }
 
   Future<void> _createAccount() async {
     // Méthode pour créer un compte
@@ -248,6 +282,12 @@ class _LoginPageState extends State<LoginPage> {
                               ? CircularProgressIndicator()
                               : Text('Se connecter'),
                     ),
+                    SizedBox(height: 20.0),
+                    ElevatedButton(
+                      onPressed: _resetPassword,
+                      child: Text('Mot de passe oublié'),
+                    ),
+
                     SizedBox(height: 10.0),
                     if (_isError)
                       Text(
